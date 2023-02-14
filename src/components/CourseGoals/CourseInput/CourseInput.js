@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import Button from "../../UI/Button/Button";
 import styles from "./CourseInput.module.css";
@@ -35,6 +35,8 @@ const CourseInput = (props) => {
   const [enteredValue, setEnteredValue] = useState("");
   const [isValid, setIsValid] = useState(true);
 
+  const inputRef = useRef(null);
+
   const goalInputChangeHandler = (event) => {
     if (event.target.value.trim().length > 0) {
       setIsValid(true);
@@ -49,6 +51,9 @@ const CourseInput = (props) => {
       return;
     }
     props.onAddGoal(enteredValue);
+    if (inputRef.current) {
+      inputRef.current.value = "";
+    }
   };
 
   return (
@@ -58,6 +63,7 @@ const CourseInput = (props) => {
       >
         <label>Course Goal</label>
         <input
+          ref={inputRef}
           style={{
             borderColor: !isValid ? "red" : "#ccc",
             background: !isValid ? "salmon" : "transparent",
